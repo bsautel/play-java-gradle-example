@@ -1,13 +1,5 @@
 plugins {
     id 'play'
-    id 'idea'
-
-    // compiles any app/*.less file to css
-    // Documentation: https://github.com/jvff/play-less-gradle-plugin
-    // UNCOMMENT NEXT LINE IF LESS COMPILATION IS REQUIRED
-    /*
-    id "com.janitovff.play-less" version "0.0.1"
-    */
 }
 
 task wrapper(type: Wrapper) {
@@ -27,115 +19,10 @@ repositories {
     }
 }
 
-// automatically enhances ebean models (see packages: 'dbmodel.*')
-// UNCOMMENT NEXT LINES IF EBEAN ENHANCEMENT IS REQUIRED
-/*
-configurations {
-    enhance
-}
-dependencies {
-    enhance "org.avaje.ebeanorm:avaje-ebeanorm-agent:4.9.2"
-}
 model {
     components {
         play {
-            binaries.all {
-                tasks.withType(PlatformScalaCompile) {
-                    doLast {
-                        ant.taskdef(name: 'ebean', classname: 'com.avaje.ebean.enhance.ant.AntEnhanceTask', classpath: project.configurations.enhance.asPath)
-                        ant.ebean(classSource: "${project.buildDir}/playBinary/classes", packages: 'dbmodel.*', transformArgs: 'debug=1')
-                    }
-                }
-            }
-        }
-    }
-}
-*/
-
-// typically, a different configuration is used for the tests than for production/development
-// One could create a copy of the application.conf, e.g., a test.conf, and pass it instead of the application.conf for the tests. 
-// UNCOMMENT NEXT LINES IF CUSTOM TEST PARAMETERS REQUIRED     
-/*
-model {
-    components {
-        play {
-            binaries.all {
-                tasks.withType(Test) {
-                    systemProperty "config.resource", "application.conf"
-                }
-            }
-        }
-    }
-}
-*/
-
-// this is required if one uses JavaScript using ECMASCRIPT 6 because the minify task cannot be easily disabled
-// UNCOMMENT NEXT LINES IF MINIFCATION OF JAVASCRIPT EXCLUSION REQUIRED  
-/*   
-model {
-    components {
-        play {
-            binaries.all {
-                tasks.withType(JavaScriptMinify) {
-                    exclude "*es6/*" // excludes all files within the es6 folder
-                }
-            }
-        }
-    }
-}
-*/
-
-// webjars package javascript and css files in jars, and make them available as part of the build
-// the following code will extract them into /public/lib
-// This is from someone from the internet, but I cannot find the link anymore. :(
-// UNCOMMENT NEXT LINES IF WORKING WITH WEBJARS REQUIRED  
-/*
-configurations {
-  webjars
-}
-dependencies {
-  webjars "org.webjars:jquery:2.2.4"
-  webjars "org.webjars:bootstrap:3.3.7"
-  webjars "org.webjars.npm:bootstrap-datepicker:1.6.4"
-  webjars "org.webjars:datatables:1.10.12"
-  webjars "org.webjars:d3js:3.5.6"
-  webjars "org.webjars:selectize.js:0.12.2"
-  webjars "org.webjars.npm:turbolinks:5.0.0"
-
-  play configurations.webjars
-}
-task('extractWebjars', type: Copy) {
-  outputs.dir file("public/lib")
-
-  configurations.webjars.each { jar ->
-
-    def config = configurations.webjars.resolvedConfiguration
-    def artifact = config.resolvedArtifacts.find {
-      it.file.toString() == jar.absolutePath
-    }
-
-    def upStreamVersion = "${artifact.moduleVersion.id.version}"
-    upStreamVersion = upStreamVersion.replaceAll(/(-[\d.-]+)/, '')
-
-    copy {
-      from zipTree(jar)
-      into file("${buildDir}/webjars-content/${artifact.name}")
-    }
-
-    copy {
-      from "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${upStreamVersion}",
-        "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${artifact.moduleVersion.id.version}"
-
-      into file("public/lib/${artifact.name}")
-    }
-  }
-}
-*/
-
-model {
-    components {
-        play {
-            platform play: '2.5.8', scala: '2.11', java: '1.8'
+            platform play: '2.5.16', scala: '2.11', java: '1.8'
             injectedRoutesGenerator = true
             
             // this is required so that not fully qualified class names in the twirl templates look for in the default Java imports, and not in the default Scala ones
@@ -148,3 +35,8 @@ model {
         }
     }
 }
+
+dependencies {
+    play project(':hello')
+}
+
