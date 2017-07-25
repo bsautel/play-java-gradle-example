@@ -1,5 +1,6 @@
 plugins {
     id 'play'
+    id 'idea'
 }
 
 task wrapper(type: Wrapper) {
