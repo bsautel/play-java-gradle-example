@@ -40,3 +40,10 @@ dependencies {
     play project(':hello')
 }
 
+subprojects {
+    repositories {
+        jcenter()
+    }
+    apply plugin: 'java'
+}
+

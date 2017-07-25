@@ -19,7 +19,7 @@ public class HomeController extends Controller {
      */
     public Result index() {
 	Hello hello = new Hello();
-        return ok(index.render("Hello " + hello.getName()));
+        return ok(index.render(hello.buildHelloMessage()));
     }
 
 }
